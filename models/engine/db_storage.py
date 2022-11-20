@@ -22,8 +22,7 @@ class DBStorage:
         'Review': review.Review,
         'State': state.State,
         'User': user.User
-    }
-    
+        }
     """
     Handles storage for database
     """
@@ -107,8 +106,9 @@ class DBStorage:
                 for item in obj_class:
                     obj_dict[iteem.id] = item
             return obj_dict[id]
-        except:
+        except Exception:
             return None
+
     def count(self, cls=None):
         """
         Counts number of objects in storage
@@ -117,6 +117,7 @@ class DBStorage:
             cls: optional string representing the class name
         Returns:
             The number of objects in storage matching the given class name
+
         """
         obj_dict = {}
         if cls:
