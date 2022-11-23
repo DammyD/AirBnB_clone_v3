@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """
-Contains the TestDBStorageDocs and TestDBStorage classes
+Unit Test for BaseModel Class
 """
-
 import unittest
 from datetime import datetime
 from models import *
@@ -16,11 +15,10 @@ storage_type = os.environ.get('HBNB_TYPE_STORAGE')
 
 @unittest.skipIf(storage_type != 'db', 'skip if environ is not db')
 class TestDBStorageDocs(unittest.TestCase):
-    """Tests to check the documentation and style of DBStorage class"""
+    """Class for testing BaseModel docs"""
 
     @classmethod
     def setUpClass(cls):
-        """Set up for the doc tests"""
         print('\n\n.................................')
         print('..... Testing Documentation .....')
         print('..... For FileStorage Class .....')
@@ -66,19 +64,6 @@ class TestDBStorageDocs(unittest.TestCase):
         """... documentation for delete function"""
         expected = ' deletes obj from current database session if not None '
         actual = DBStorage.delete.__doc__
-        self.assertEqual(expected, actual)
-
-    def test_doc_get(self):
-        """... documentation for get function"""
-        expected = ' retrieves one object '
-        actual = DBStorage.get.__doc__
-        self.assertEqual(expected, actual)
-
-    def test_doc_count(self):
-        """... testing length version of count function
-        """
-        expected = 293
-        actual = len(DBStorage.count.__doc__)
         self.assertEqual(expected, actual)
 
 
@@ -321,6 +306,7 @@ class TestGetCountDB(unittest.TestCase):
 
     def setUp(self):
         """initializes new state and cities for testing"""
+        
         self.state = State()
         self.state.name = 'California'
         self.state.save()
@@ -337,24 +323,19 @@ class TestGetCountDB(unittest.TestCase):
         """check if get method returns state"""
         real_state = storage.get("State", self.state.id)
         fake_state = storage.get("State", "12345")
-        no_state = storage.get("", "")
 
         self.assertEqual(real_state, self.state)
         self.assertNotEqual(fake_state, self.state)
-        self.assertIsNone(no_state)
 
     def test_count(self):
         """checks if count method returns correct numbers"""
         state_count = storage.count("State")
         city_count = storage.count("City")
         place_count = storage.count("Place")
-        all_count = storage.count("")
 
-        self.assertEqual(state_count, 3)
-        self.assertEqual(city_count, 4)
+        self.assertEqual(state_count, 1)
+        self.assertEqual(city_count, 2)
         self.assertEqual(place_count, 0)
-        self.assertEqual(all_count, 7)
-
 
 if __name__ == '__main__':
     unittest.main
