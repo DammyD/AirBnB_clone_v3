@@ -70,18 +70,6 @@ class TestFileStorageDocs(unittest.TestCase):
         actual = FileStorage.reload.__doc__
         self.assertEqual(expected, actual)
 
-    def test_doc_get(self):
-        """... documentation for get function"""
-        expected = ' retrieves one object '
-        actual = FileStorage.get.__doc__
-        self.assertEqual(expected, actual)
-
-    def test_doc_count(self):
-        """... documentation for count function"""
-        expected = ' counts number of objects of a class in storage '
-        actual = FileStorage.count.__doc__
-        self.assertEqual(expected, actual)
-
 
 @unittest.skipIf(storage_type == 'db', 'skip if environ is db')
 class TestBmFsInstances(unittest.TestCase):
@@ -130,7 +118,7 @@ class TestBmFsInstances(unittest.TestCase):
         actual = 1
         try:
             serialized = json.dumps(my_model_json)
-        except Exception:
+        except:
             actual = 0
         self.assertTrue(1 == actual)
 
@@ -236,7 +224,6 @@ class TestGetCountFS(unittest.TestCase):
         """initializes new state and cities for testing"""
         if os.path.isfile(F):
             os.remove(F)
-        storage.reload()
         self.state = State()
         self.state.name = 'California'
         self.state.save()
@@ -253,24 +240,19 @@ class TestGetCountFS(unittest.TestCase):
         """check if get method returns state"""
         real_state = storage.get("State", self.state.id)
         fake_state = storage.get("State", "12345")
-        no_state = storage.get("", "")
 
         self.assertEqual(real_state, self.state)
         self.assertNotEqual(fake_state, self.state)
-        self.assertIsNone(no_state)
 
     def test_count(self):
         """checks if count method returns correct numbers"""
         state_count = storage.count("State")
         city_count = storage.count("City")
         place_count = storage.count("Place")
-        all_count = storage.count(None)
 
         self.assertEqual(state_count, 1)
         self.assertEqual(city_count, 2)
         self.assertEqual(place_count, 0)
-        self.assertEqual(all_count, 18)
-
 
 if __name__ == '__main__':
     unittest.main
